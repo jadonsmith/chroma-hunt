@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Chroma Hunt</title>
+<meta name="description" content="Everyone gets the same colour, then races to find something real that matches it. Your camera judges how close you got.">
+<meta name="theme-color" content="#0f0f11">
+<meta property="og:title" content="Chroma Hunt">
+<meta property="og:description" content="A camera party game. Same colour for everyone, one snap each, and the photos go up side by side.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230f0f11'/%3E%3Cpath d='M32 10a22 22 0 0 1 19 11' stroke='%23e8662a' stroke-width='7' fill='none'/%3E%3Cpath d='M51 21a22 22 0 0 1 0 22' stroke='%23e6c84a' stroke-width='7' fill='none'/%3E%3Cpath d='M51 43a22 22 0 0 1-19 11' stroke='%234f8a3c' stroke-width='7' fill='none'/%3E%3Cpath d='M32 54a22 22 0 0 1-19-11' stroke='%2336b3c4' stroke-width='7' fill='none'/%3E%3Cpath d='M13 43a22 22 0 0 1 0-22' stroke='%236b3f8e' stroke-width='7' fill='none'/%3E%3Cpath d='M13 21a22 22 0 0 1 19-11' stroke='%23d64a8a' stroke-width='7' fill='none'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%23f4f0e8'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+<a class="hub-link" href="https://play.jadon.me/"><span aria-hidden="true">←</span> All games</a>
+
+<!-- ═════════════════════════ PHONE ═════════════════════════ -->
+<main id="phone" class="app">
+
+  <!-- home -->
+  <section id="scr-home" class="screen home">
+    <div class="home-in">
+      <div class="fan" id="fan" aria-hidden="true">
+        <div class="pchip" style="--i:-2"><i class="sw"></i><b class="nm"></b><span class="hx"></span></div>
+        <div class="pchip" style="--i:-1"><i class="sw"></i><b class="nm"></b><span class="hx"></span></div>
+        <div class="pchip" style="--i:1"><i class="sw"></i><b class="nm"></b><span class="hx"></span></div>
+        <div class="pchip" style="--i:2"><i class="sw"></i><b class="nm"></b><span class="hx"></span></div>
+        <div class="pchip front" style="--i:0"><i class="sw"></i><b class="nm"></b><span class="hx"></span></div>
+        <div class="fan-scope">
+          <svg viewBox="-50 -50 100 100"><circle r="30" class="fs-ring"/><circle r="20" class="fs-hole"/><path d="M0-44v8M0 36v8M-44 0h8M36 0h8" class="fs-tick"/></svg>
+          <span class="fan-read" id="fan-read">96% · Spot on</span>
+        </div>
+      </div>
+
+      <h1 class="logo" aria-label="Chroma Hunt">
+        <span class="lw1" aria-hidden="true"><i style="--c:#d64a5a">c</i><i style="--c:#e8762a">h</i><i style="--c:#e6c84a">r</i><i class="lo"><svg viewBox="-50 -50 100 100"><circle r="34"/><path d="M0-48v12M0 36v12M-48 0h12M36 0h12"/></svg></i><i style="--c:#5fb36a">m</i><i style="--c:#5ea4e0">a</i></span>
+        <span class="lw2" aria-hidden="true">hunt</span>
+      </h1>
+      <p class="pitch">Everyone gets the same colour. Race to find <b>something real</b> that matches it. Your camera judges how close you got.</p>
+
+      <form id="f-home" class="home-form" autocomplete="off">
+        <label class="sr" for="in-name">Your name</label>
+        <input id="in-name" maxlength="14" placeholder="Your name" spellcheck="false" autocomplete="nickname" enterkeyhint="go">
+        <button class="btn primary big" type="submit" id="btn-create">Start a party <span aria-hidden="true">→</span></button>
+        <div class="join-row">
+          <label class="sr" for="in-code">Room code</label>
+          <input id="in-code" class="code-in" maxlength="4" placeholder="CODE" spellcheck="false" autocapitalize="characters" autocomplete="off">
+          <button class="btn ghost" type="button" id="btn-join">Join</button>
+        </div>
+        <div class="solo-row">
+          <button class="btn ghost" type="button" id="btn-solo">Solo hunt</button>
+          <button class="btn ghost daily" type="button" id="btn-daily"><span class="dot" aria-hidden="true"></span>Today's palette</button>
+        </div>
+      </form>
+
+      <ol class="how">
+        <li><b>One colour</b><span>everyone gets the same</span></li>
+        <li><b>Find it</b><span>something real, no screens</span></li>
+        <li><b>One snap</b><span>closer + faster scores more</span></li>
+      </ol>
+      <p class="tv-tip">Got a TV or laptop? Open <a href="?tv">the big screen</a> on it and everyone scans in.</p>
+    </div>
+  </section>
+
+  <!-- lobby -->
+  <section id="scr-lobby" class="screen lobby">
+    <header class="lob-head">
+      <button class="chip-btn" id="btn-leave" type="button"><span aria-hidden="true">←</span> Leave</button>
+      <div class="room-id" aria-live="polite"><span class="lbl">Room</span><span class="code" id="lob-code">····</span></div>
+      <div class="lob-acts">
+        <button class="chip-btn" id="btn-share" type="button">Invite</button>
+        <button class="chip-btn" id="btn-qr" type="button" aria-expanded="false">QR</button>
+      </div>
+    </header>
+
+    <div class="lob-body">
+      <div id="qr-box" class="qr-box" hidden>
+        <div class="qr" id="lob-qr"></div>
+        <p>Point another phone's camera here to join</p>
+      </div>
+
+      <div class="cam-card" id="cam-card">
+        <div class="cc-view" aria-hidden="true">
+          <canvas id="lob-preview" width="160" height="160"></canvas>
+          <svg viewBox="-50 -50 100 100" class="cc-reticle"><circle r="44" class="ccr-ring"/><circle r="14" class="ccr-hole"/></svg>
+          <span class="cc-swatch" id="lob-swatch"></span>
+        </div>
+        <div class="cc-text">
+          <h2 id="cc-title">Turn on your camera</h2>
+          <p id="cc-sub">Use the back camera. It reads colours right here on your phone.</p>
+        </div>
+        <button class="btn primary big" id="btn-cam" type="button">Turn on camera</button>
+        <button class="btn link" id="btn-photo" type="button">Camera won't start? Use your camera app instead</button>
+        <p class="privacy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg><span>Nothing is recorded or saved. When you snap, a small thumbnail goes to this room for the reveal. The server holds it in memory and deletes it when the round ends. Solo, it never leaves your phone.</span></p>
+      </div>
+
+      <div class="set-card" id="set-card">
+        <h3 class="list-h">Game</h3>
+        <div class="seg" id="set-rounds" role="radiogroup" aria-label="Colours per game">
+          <span class="seg-l">Colours</span>
+          <button type="button" data-v="4">4</button><button type="button" data-v="6">6</button><button type="button" data-v="8">8</button>
+        </div>
+        <div class="seg" id="set-secs" role="radiogroup" aria-label="Seconds to hunt">
+          <span class="seg-l">Hunt time</span>
+          <button type="button" data-v="30">30s</button><button type="button" data-v="45">45s</button><button type="button" data-v="60">60s</button>
+        </div>
+        <label class="tgl"><input type="checkbox" id="set-daily"><span class="tgl-ui" aria-hidden="true"></span><span class="tgl-l">Today's palette<small>5 colours everyone in the world gets today</small></span></label>
+        <p class="set-ro" id="set-ro"></p>
+      </div>
+
+      <h3 class="list-h">Hunters <span id="lob-count"></span></h3>
+      <ul class="players" id="lob-players"></ul>
+    </div>
+
+    <footer class="lob-foot">
+      <p class="wait" id="lob-wait"></p>
+      <button class="btn primary big" id="btn-start" type="button" hidden>Start</button>
+    </footer>
+  </section>
+
+  <!-- game -->
+  <section id="scr-game" class="screen game">
+    <div class="view" id="view">
+      <video id="cam" playsinline muted autoplay></video>
+    </div>
+    <div class="vignette" aria-hidden="true"></div>
+
+    <div class="scope" id="scope" aria-hidden="true">
+      <svg class="reticle" id="reticle" viewBox="-120 -120 240 240">
+        <g class="ticks" id="ticks"></g>
+        <circle class="r-shadow" r="55"/>
+        <circle class="r-ring" id="r-ring" r="55"/>
+        <circle class="r-hole" r="44"/>
+        <path class="r-cross" d="M0 -14v8M0 6v8M-14 0h8M6 0h8"/>
+      </svg>
+      <div class="meter" id="meter">
+        <span class="split"><i id="m-target"></i><i id="m-live"></i></span>
+        <span class="m-read"><b id="m-pct">--</b><span id="m-heat">Aim at something</span></span>
+      </div>
+    </div>
+
+    <header class="hud" id="hud">
+      <div class="timebar"><i id="hud-time"></i></div>
+      <div class="hud-row">
+        <span class="hud-round" id="hud-round">1/6</span>
+        <span class="hud-target" id="hud-target"><i id="hud-sw"></i><b id="hud-name">Colour</b></span>
+        <span class="hud-clock" id="hud-clock">0:45</span>
+      </div>
+      <p class="hud-note" id="hud-note" hidden></p>
+    </header>
+
+    <footer class="hunt-foot" id="hunt-foot">
+      <div class="who" id="hunt-who" aria-label="Other hunters"></div>
+      <button class="shutter" id="btn-shutter" type="button" aria-label="Snap this colour" disabled><i id="shutter-fill"></i></button>
+      <div class="tools">
+        <button class="tool" id="btn-torch" type="button" aria-label="Torch" hidden><svg viewBox="0 0 24 24"><path d="M8 3h8l-2 6v3h-4V9z"/><path d="M10 12h4v9h-4z"/></svg></button>
+        <button class="tool" id="btn-flip" type="button" aria-label="Switch camera" hidden><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><path d="M9 13a3 3 0 0 1 5.2-2M15 13a3 3 0 0 1-5.2 2"/><path d="M14.5 9.6l-.3 1.6-1.6-.3M9.5 16.4l.3-1.6 1.6.3"/></svg></button>
+        <button class="tool" id="btn-sound" type="button" aria-label="Sound"><svg viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path class="snd-on" d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/><path class="snd-off" d="M16.5 9.5l5 5M21.5 9.5l-5 5"/></svg></button>
+      </div>
+    </footer>
+
+    <!-- camera-app fallback -->
+    <div class="photo-ui" id="photo-ui" hidden>
+      <div class="pu-frame" id="pu-frame"><img id="pu-img" alt=""><span class="pu-ring"></span></div>
+      <p class="pu-read" id="pu-read">Fill the frame with your colour, then snap it with your camera app.</p>
+      <div class="pu-acts">
+        <button class="btn primary big" id="btn-pu-take" type="button">Take a photo</button>
+        <button class="btn primary big" id="btn-pu-use" type="button" hidden>Use this one</button>
+        <button class="btn ghost" id="btn-pu-retake" type="button" hidden>Retake</button>
+      </div>
+    </div>
+
+    <div class="flash" id="flash" aria-hidden="true"></div>
+
+    <div class="overlay intro" id="ov-intro" hidden>
+      <p class="kicker" id="intro-kicker">Get ready</p>
+      <h2 class="big-t" id="intro-title">6 colours</h2>
+      <p class="intro-sub" id="intro-sub">Same colour for everyone. One snap each. Closer and faster scores more.</p>
+      <ul class="rules">
+        <li><b>Aim</b> the circle at something real</li>
+        <li><b>Watch</b> the meter climb</li>
+        <li><b>Snap</b> once. No retakes</li>
+      </ul>
+    </div>
+
+    <div class="overlay ann" id="ov-ann" hidden>
+      <div class="ann-flood" id="ann-flood"></div>
+      <div class="ann-in">
+        <p class="ann-round" id="ann-round">Colour 1 of 6</p>
+        <p class="ann-kind" id="ann-kind" hidden></p>
+        <h2 class="ann-name" id="ann-name">Mango</h2>
+        <p class="ann-hex" id="ann-hex">#000000</p>
+        <p class="ann-hint" id="ann-hint">Find something this colour</p>
+        <div class="ann-count" id="ann-count"></div>
+      </div>
+    </div>
+
+    <div class="overlay locked" id="ov-locked" hidden>
+      <div class="lk-card" id="lk-card">
+        <p class="lk-tag" id="lk-tag">Locked in</p>
+        <div class="lk-main">
+          <span class="split big"><i id="lk-target"></i><i id="lk-found"></i></span>
+          <div class="lk-num"><b id="lk-pct">0%</b><span id="lk-heat">Warm</span></div>
+        </div>
+        <p class="lk-pts" id="lk-pts"></p>
+        <p class="lk-meta" id="lk-meta"></p>
+        <div class="lk-wait" id="lk-wait"></div>
+      </div>
+    </div>
+
+    <div class="overlay watch" id="ov-watch" hidden>
+      <p class="w-tag" id="w-tag">Next colour</p>
+      <h2 class="w-title" id="w-title">You're in from the next colour</h2>
+      <p class="w-sub" id="w-sub"></p>
+      <button class="btn primary big" id="btn-watch-cam" type="button" hidden>Turn camera on</button>
+      <ul class="mini" id="w-list"></ul>
+    </div>
+
+    <div class="overlay reveal" id="ov-reveal" hidden>
+      <div class="rv-scroll">
+        <header class="rv-head">
+          <span class="rv-sw" id="rv-sw"></span>
+          <div><p class="rv-round" id="rv-round">Colour 1 of 6</p><h2 class="rv-name" id="rv-name">Mango</h2></div>
+        </header>
+        <div class="rv-me" id="rv-me"></div>
+        <ol class="rv-grid" id="rv-grid"></ol>
+        <ol class="rv-table" id="rv-table"></ol>
+      </div>
+      <p class="rv-next" id="rv-next"></p>
+    </div>
+
+    <div class="overlay camoff" id="ov-camoff" hidden>
+      <h2>Camera paused</h2>
+      <p>Your phone turned the camera off. Tap to bring it back.</p>
+      <button class="btn primary big" id="btn-camback" type="button">Turn camera back on</button>
+    </div>
+  </section>
+
+  <!-- game over -->
+  <section id="scr-over" class="screen over">
+    <canvas class="confetti" id="ov-confetti"></canvas>
+    <div class="over-in">
+      <p class="kicker" id="ov-kicker">Game over</p>
+      <h2 class="ov-title" id="ov-title"></h2>
+      <p class="ov-sub" id="ov-sub"></p>
+      <ol class="standings" id="ov-list"></ol>
+      <div class="awards" id="ov-awards"></div>
+      <h3 class="list-h" id="ov-pal-h">Your palette</h3>
+      <ol class="palette" id="ov-palette"></ol>
+    </div>
+    <footer class="over-foot">
+      <button class="btn primary big" id="btn-again" type="button" hidden>Play again</button>
+      <p class="wait" id="ov-wait" hidden>Waiting for the host to start the next game…</p>
+      <div class="over-row">
+        <button class="btn ghost" id="btn-card" type="button">Save palette card</button>
+        <button class="btn ghost" id="btn-settings" type="button" hidden>Change settings</button>
+        <button class="btn ghost" id="btn-exit" type="button">Leave</button>
+      </div>
+    </footer>
+  </section>
+</main>
+
+<!-- ═════════════════════════ BIG SCREEN ═════════════════════════ -->
+<main id="tv" class="tv" hidden>
+  <section id="tv-lobby" class="tv-screen tv-lobby">
+    <div class="tv-left">
+      <h1 class="logo tvlogo" aria-label="Chroma Hunt">
+        <span class="lw1" aria-hidden="true"><i style="--c:#d64a5a">c</i><i style="--c:#e8762a">h</i><i style="--c:#e6c84a">r</i><i class="lo"><svg viewBox="-50 -50 100 100"><circle r="34"/><path d="M0-48v12M0 36v12M-48 0h12M36 0h12"/></svg></i><i style="--c:#5fb36a">m</i><i style="--c:#5ea4e0">a</i></span>
+        <span class="lw2" aria-hidden="true">hunt</span>
+      </h1>
+      <p class="tv-pitch">Grab your phones. Everyone gets the same colour and races to find <b>something real</b> that matches it. One snap each. The camera scores how close you got, and the photos go up here.</p>
+      <ol class="how tv-how">
+        <li><b>One colour</b><span>everyone gets the same</span></li>
+        <li><b>Find it</b><span>something real, no screens</span></li>
+        <li><b>One snap</b><span>closer + faster scores more</span></li>
+      </ol>
+      <p class="tv-privacy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>Photos are small thumbnails, held in memory only until each round's reveal ends. Nothing is saved.</p>
+      <div class="tv-set" id="tv-set">
+        <div class="seg" id="tv-rounds"><span class="seg-l">Colours</span><button type="button" data-v="4">4</button><button type="button" data-v="6">6</button><button type="button" data-v="8">8</button></div>
+        <div class="seg" id="tv-secs"><span class="seg-l">Hunt time</span><button type="button" data-v="30">30s</button><button type="button" data-v="45">45s</button><button type="button" data-v="60">60s</button></div>
+        <label class="tgl"><input type="checkbox" id="tv-daily"><span class="tgl-ui" aria-hidden="true"></span><span class="tgl-l">Today's palette</span></label>
+      </div>
+    </div>
+    <div class="tv-right">
+      <div class="join-card">
+        <div class="qr" id="tv-qr"></div>
+        <div class="join-text">
+          <p class="lbl">Scan with your phone, or go to</p>
+          <p class="url" id="tv-url">play.jadon.me/chroma</p>
+          <p class="lbl">and enter</p>
+          <p class="code" id="tv-code">····</p>
+        </div>
+      </div>
+      <h2 class="tv-h">Hunters <span id="tv-count"></span></h2>
+      <ul class="tv-players" id="tv-players"></ul>
+      <p class="tv-empty" id="tv-empty">Waiting for phones to join…</p>
+      <div class="tv-actions">
+        <button class="btn primary big" id="tv-start" type="button" disabled>Start</button>
+        <button class="chip-btn" id="tv-sound" type="button">Turn sound on</button>
+      </div>
+      <form class="tv-join" id="tv-join" autocomplete="off">
+        <span>Made a room on a phone already?</span>
+        <input id="tv-join-code" maxlength="4" placeholder="CODE" spellcheck="false" autocapitalize="characters">
+        <button class="chip-btn" type="submit">Show it here</button>
+      </form>
+    </div>
+  </section>
+
+  <section id="tv-stage" class="tv-screen tv-stage" hidden>
+    <header class="tv-top">
+      <span class="tv-round" id="tv-round">Colour 1 of 6</span>
+      <span class="tv-kind" id="tv-kind" hidden></span>
+      <span class="tv-codechip">Join: <b id="tv-codechip">····</b></span>
+    </header>
+
+    <div class="tv-intro" id="tv-intro" hidden>
+      <p class="kicker" id="tv-intro-kicker">Get ready</p>
+      <h2 id="tv-intro-title">6 colours</h2>
+      <p id="tv-intro-sub">Same colour for everyone. One snap each. Closer and faster scores more.</p>
+    </div>
+
+    <div class="tv-ann" id="tv-ann" hidden>
+      <div class="tv-flood" id="tv-flood"></div>
+      <div class="tv-ann-in">
+        <p class="tv-ann-kicker" id="tv-ann-kicker">Find something</p>
+        <h2 class="tv-ann-name" id="tv-ann-name">Mango</h2>
+        <p class="tv-ann-hex" id="tv-ann-hex"></p>
+        <div class="tv-count" id="tv-countdown"></div>
+      </div>
+    </div>
+
+    <div class="tv-hunt" id="tv-hunt" hidden>
+      <aside class="tv-target">
+        <div class="tv-chip" id="tv-chip"><i class="sw" id="tv-chip-sw"></i><b class="nm" id="tv-chip-nm">Mango</b><span class="hx" id="tv-chip-hx"></span></div>
+        <div class="tv-clock"><svg viewBox="0 0 100 100"><circle class="track" cx="50" cy="50" r="44"/><circle class="fill" id="tv-clock-fill" cx="50" cy="50" r="44"/></svg><b id="tv-clock">45</b></div>
+        <p class="tv-locked" id="tv-locked">0 of 5 locked in</p>
+      </aside>
+      <ul class="tv-hunters" id="tv-hunters"></ul>
+    </div>
+
+    <div class="tv-reveal" id="tv-reveal" hidden>
+      <div class="tv-rv-head">
+        <span class="tv-rv-sw" id="tv-rv-sw"></span>
+        <h2 id="tv-rv-name">Mango</h2>
+        <p class="tv-next" id="tv-next"></p>
+      </div>
+      <ol class="tv-gallery" id="tv-gallery"></ol>
+      <ol class="tv-board" id="tv-board"></ol>
+    </div>
+  </section>
+
+  <section id="tv-over" class="tv-screen tv-over" hidden>
+    <canvas class="confetti" id="tv-confetti"></canvas>
+    <div class="tv-over-in">
+      <p class="kicker" id="tv-over-kicker">Winner</p>
+      <h2 class="tv-winner" id="tv-winner"></h2>
+      <p class="tv-winner-sub" id="tv-winner-sub"></p>
+      <div class="tv-over-cols">
+        <ol class="tv-standings" id="tv-standings"></ol>
+        <div class="tv-awards" id="tv-awards"></div>
+      </div>
+      <div class="tv-actions">
+        <button class="btn primary big" id="tv-again" type="button">Play again</button>
+        <button class="chip-btn" id="tv-tolobby" type="button">Change settings</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="toast" class="toast" role="status" hidden></div>
+<input type="file" id="file-cap" accept="image/*" capture="environment" hidden>
+
+<script src="vendor/qrcode.js"></script>
+<script type="module" src="js/main.js?v=2"></script>
+</body>
+</html>

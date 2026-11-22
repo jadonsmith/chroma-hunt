@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Chroma Hunt · party harness</title>
+<style>
+  body { margin: 0; background: #08080a; color: #ddd; font: 14px system-ui, sans-serif; overflow: hidden; }
+  header { display: flex; gap: 12px; align-items: center; padding: 8px 14px; }
+  header b { font-family: monospace; font-size: 16px; }
+  button { font: inherit; padding: 6px 12px; border-radius: 8px; border: 1px solid #444; background: #222; color: #eee; cursor: pointer; }
+  .wall { display: grid; grid-template-columns: auto 1fr; gap: 12px; padding: 0 12px; }
+  .tvbox { width: 960px; height: 540px; overflow: hidden; border-radius: 10px; outline: 1px solid #333; }
+  .tvbox iframe { width: 1920px; height: 1080px; border: 0; transform: scale(0.5); transform-origin: 0 0; }
+  .phones { display: flex; gap: 10px; flex-wrap: wrap; align-content: flex-start; }
+  .ph { width: 234px; height: 506px; overflow: hidden; border-radius: 18px; outline: 1px solid #333; position: relative; }
+  .ph iframe { width: 390px; height: 844px; border: 0; transform: scale(0.6); transform-origin: 0 0; }
+  .ph span { position: absolute; z-index: 2; left: 8px; bottom: 6px; font: 11px monospace; color: #999; }
+</style>
+</head>
+<body>
+<header>
+  <span>Room <b id="code">····</b></span>
+  <button id="start">Start on TV</button>
+  <label>phones <input id="n" type="number" min="1" max="10" value="4" style="width:44px"></label>
+  <button id="reload">Reload phones</button>
+  <span id="status"></span>
+</header>
+<div class="wall">
+  <div class="tvbox"><iframe id="tv" src="/?tv&dev"></iframe></div>
+  <div class="phones" id="phones"></div>
+</div>
+<script type="module">
+  const NAMES = ["Ava", "Ben", "Cleo", "Dev", "Eli", "Fay", "Gus", "Hana", "Ivo", "Jun"];
+  const tv = document.getElementById("tv");
+  let code = null;
+  function phones() {
+    const box = document.getElementById("phones");
+    box.replaceChildren();
+    const n = Math.max(1, Math.min(10, Number(document.getElementById("n").value) || 4));
+    for (let i = 0; i < n; i++) {
+      const d = document.createElement("div");
+      d.className = "ph";
+      const f = document.createElement("iframe");
+      const skill = (0.35 + 0.6 * (i / Math.max(1, n - 1))).toFixed(2);
+      f.src = `/?room=${code}&dev&auto&slot=${i + 1}&name=${NAMES[i]}&skill=${skill}&seed=${1000 + i * 77}`;
+      f.allow = "camera";
+      d.appendChild(f);
+      const s = document.createElement("span");
+      s.textContent = `${NAMES[i]} · skill ${skill}`;
+      d.appendChild(s);
+      box.appendChild(d);
+    }
+  }
+  const wait = setInterval(() => {
+    const w = tv.contentWindow;
+    const c = w && w.__tv && w.__tv.st.code;
+    if (c && c !== code) {
+      code = c;
+      document.getElementById("code").textContent = c;
+      phones();
+    }
+  }, 300);
+  document.getElementById("start").onclick = () => tv.contentWindow.document.getElementById("tv-start").click();
+  document.getElementById("reload").onclick = phones;
+  window.__party = { tv, get code() { return code; } };
+</script>
+</body>
+</html>

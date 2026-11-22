@@ -1,0 +1,17 @@
+{
+  "name": "chroma-hunt",
+  "version": "1.0.0",
+  "description": "Chroma Hunt: everyone gets the same colour, then races to find something real that matches it. The camera scores how close you got.",
+  "main": "server.js",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test/color.test.js && node test/sim.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "qrcode-generator": "^1.5.2",
+    "ws": "^8.23.0"
+  }
+}
